@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Bötesapp</title>
+  <link rel="stylesheet" href="stil.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="card full hero">
+      <div class="hero-content">
+        <img class="hero-logo" src="Bilder/Bodens_BK_logo.svg.png" alt="Bodens BK logga" />
+        <div>
+          <h1>Digital Bötesapp</h1>
+          <p class="muted">Hantera personer, böter, betalstatus och se sammanställning per månad, per person och totalt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Lägg till person</h2>
+      </div>
+      <form id="person-form" class="input-row">
+        <input id="person-name" type="text" placeholder="Namn på person" required />
+        <button type="submit" class="btn-primary">Lägg till</button>
+      </form>
+      <div style="margin-top:0.9rem;">
+        <h3>Personer</h3>
+        <ul id="person-list" class="person-list"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Lägg till böter</h2>
+      </div>
+      <form id="fine-form" class="input-row">
+        <select id="fine-person" required>
+          <option value="">Välj person</option>
+        </select>
+        <input id="fine-description" type="text" placeholder="Beskrivning (ex. Glömde disken)" required />
+        <input id="fine-amount" type="number" min="1" step="1" placeholder="Belopp (kr)" required />
+        <input id="fine-date" type="date" required />
+        <button type="submit" class="btn-primary">Lägg till böter</button>
+      </form>
+      <div style="margin-top:0.9rem;">
+        <h3>Böter</h3>
+        <ul id="fine-list" class="fine-list"></ul>
+      </div>
+    </section>
+
+    <section class="card full">
+      <div class="section-title">
+        <h2>Sammanställning</h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="muted">Totalt belopp (alla böter)</div>
+          <div id="total-all" class="stat-value">0 kr</div>
+        </div>
+        <div class="stat">
+          <div class="muted">Totalt obetalt</div>
+          <div id="total-unpaid" class="stat-value">0 kr</div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <h3>Per person</h3>
+        <ul id="summary-person" class="summary-list"></ul>
+      </div>
+      <div style="margin-top:1rem;">
+        <h3>Per månad</h3>
+        <ul id="summary-month" class="summary-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
