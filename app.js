@@ -14,10 +14,13 @@ const fineAmountInput = document.getElementById("fine-amount");
 const fineDateInput = document.getElementById("fine-date");
 const fineListEl = document.getElementById("fine-list");
 
-const totalAllEl = document.getElementById("total-all");
 const totalUnpaidEl = document.getElementById("total-unpaid");
+const totalPaidEl = document.getElementById("total-paid");
+const totalCountEl = document.getElementById("total-count");
 const summaryPersonEl = document.getElementById("summary-person");
 const summaryMonthEl = document.getElementById("summary-month");
+const summaryWorstTemplate = document.getElementById("summary-worst-item-template");
+const summaryLatestTemplate = document.getElementById("summary-latest-item-template");
 const menuToggleBtn = document.getElementById("menu-toggle");
 const mobileMenuEl = document.getElementById("mobile-menu");
 const menuBackdropEl = document.getElementById("menu-backdrop");
@@ -56,6 +59,17 @@ function formatCurrency(amount) {
 function personNameById(personId) {
   const person = state.people.find((p) => p.id === personId);
   return person ? person.name : "Okänd person";
+}
+
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return "?";
+  }
+  if (parts.length === 1) {
+    return parts[0][0].toUpperCase();
+  }
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
 }
 
 function renderPersonSelect() {
@@ -123,55 +137,50 @@ function renderFines() {
 }
 
 function renderSummary() {
-  const totalAll = state.fines.reduce((sum, fine) => sum + fine.amount, 0);
+  const totalPaid = state.fines.filter((fine) => fine.paid).reduce((sum, fine) => sum + fine.amount, 0);
   const totalUnpaid = state.fines.filter((fine) => !fine.paid).reduce((sum, fine) => sum + fine.amount, 0);
-  totalAllEl.textContent = formatCurrency(totalAll);
+  totalPaidEl.textContent = formatCurrency(totalPaid);
   totalUnpaidEl.textContent = formatCurrency(totalUnpaid);
+  totalCountEl.textContent = String(state.fines.length);
 
   const personTotals = state.people.map((person) => {
     const personFines = state.fines.filter((fine) => fine.personId === person.id);
-    const total = personFines.reduce((sum, fine) => sum + fine.amount, 0);
     const unpaid = personFines.filter((fine) => !fine.paid).reduce((sum, fine) => sum + fine.amount, 0);
-    return { name: person.name, total, unpaid };
-  }).sort((a, b) => b.total - a.total);
+    return { name: person.name, unpaid, finesCount: personFines.length };
+  }).filter((item) => item.finesCount > 0).sort((a, b) => b.unpaid - a.unpaid).slice(0, 3);
 
   summaryPersonEl.innerHTML = "";
   if (personTotals.length === 0) {
-    summaryPersonEl.innerHTML = '<li class="empty">Ingen data att visa per person.</li>';
+    summaryPersonEl.innerHTML = '<li class="empty">Inga böter ännu.</li>';
   } else {
+    const medals = ["🥇", "🥈", "🥉"];
     personTotals.forEach((item) => {
-      const li = document.createElement("li");
-      li.className = "summary-item";
-      li.innerHTML = `<strong>${item.name}</strong><span class="muted">Totalt: ${formatCurrency(item.total)} · Obetalt: ${formatCurrency(item.unpaid)}</span>`;
+      const li = summaryWorstTemplate.content.firstElementChild.cloneNode(true);
+      li.querySelector(".summary-medal").textContent = medals[personTotals.indexOf(item)] || "•";
+      li.querySelector(".summary-avatar").textContent = initials(item.name);
+      li.querySelector(".summary-row-name").textContent = item.name;
+      li.querySelector(".summary-row-sub").textContent = `${item.finesCount} böter`;
+      li.querySelector(".summary-row-amount").textContent = formatCurrency(item.unpaid);
       summaryPersonEl.appendChild(li);
     });
   }
 
-  const monthMap = new Map();
-  state.fines.forEach((fine) => {
-    const monthKey = fine.date.slice(0, 7);
-    if (!monthMap.has(monthKey)) {
-      monthMap.set(monthKey, { total: 0, unpaid: 0 });
-    }
-    const data = monthMap.get(monthKey);
-    data.total += fine.amount;
-    if (!fine.paid) {
-      data.unpaid += fine.amount;
-    }
-  });
-
-  const monthTotals = [...monthMap.entries()]
-    .map(([month, values]) => ({ month, ...values }))
-    .sort((a, b) => b.month.localeCompare(a.month));
+  const latestFines = [...state.fines].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
 
   summaryMonthEl.innerHTML = "";
-  if (monthTotals.length === 0) {
-    summaryMonthEl.innerHTML = '<li class="empty">Ingen data att visa per månad.</li>';
+  if (latestFines.length === 0) {
+    summaryMonthEl.innerHTML = '<li class="empty">Inga böter registrerade.</li>';
   } else {
-    monthTotals.forEach((item) => {
-      const li = document.createElement("li");
-      li.className = "summary-item";
-      li.innerHTML = `<strong>${item.month}</strong><span class="muted">Totalt: ${formatCurrency(item.total)} · Obetalt: ${formatCurrency(item.unpaid)}</span>`;
+    latestFines.forEach((item) => {
+      const name = personNameById(item.personId);
+      const li = summaryLatestTemplate.content.firstElementChild.cloneNode(true);
+      li.querySelector(".summary-avatar").textContent = initials(name);
+      li.querySelector(".summary-row-name").textContent = name;
+      li.querySelector(".summary-row-sub").textContent = item.description;
+      li.querySelector(".summary-row-amount").textContent = formatCurrency(item.amount);
+      const paidPill = li.querySelector(".summary-paid-pill");
+      paidPill.textContent = item.paid ? "✓" : "•";
+      paidPill.classList.toggle("is-paid", item.paid);
       summaryMonthEl.appendChild(li);
     });
   }

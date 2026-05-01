@@ -12,6 +12,11 @@
       <div class="mobile-nav-header">
         <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">☰ Meny</button>
       </div>
+      <nav class="desktop-tabs" aria-label="Huvudflikar">
+        <button class="tab-btn" data-tab-target="fine" type="button">Lägg till böter</button>
+        <button class="tab-btn" data-tab-target="person" type="button">Lägg till spelare</button>
+        <button class="tab-btn" data-tab-target="summary" type="button">Sammanställning</button>
+      </nav>
       <button id="menu-backdrop" class="menu-backdrop" type="button" aria-label="Stäng meny"></button>
       <nav id="mobile-menu" class="mobile-menu" aria-label="Mobilmeny">
         <button class="menu-item" data-tab-target="fine" type="button">Lägg till böter</button>
@@ -44,6 +49,7 @@
         </select>
         <input id="fine-description" type="text" placeholder="Beskrivning (ex. Glömde disken)" required />
         <input id="fine-amount" type="number" min="1" step="1" placeholder="Belopp (kr)" required />
+        <label class="field-label" for="fine-date">Datum för böter</label>
         <input id="fine-date" type="date" required />
         <button type="submit" class="btn-primary">Lägg till böter</button>
       </form>
@@ -54,29 +60,66 @@
     </section>
 
     <section class="card full tab-panel" data-tab-panel="summary">
-      <div class="section-title">
-        <h2>Sammanställning</h2>
-      </div>
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="muted">Totalt belopp (alla böter)</div>
-          <div id="total-all" class="stat-value">0 kr</div>
+      <div class="summary-screen">
+        <div class="summary-headline">Böteslåsan</div>
+        <h2 class="summary-title">Bodens BK</h2>
+
+        <div class="summary-stat-grid">
+          <div class="summary-stat-card">
+            <div class="summary-stat-label">OBETALT</div>
+            <div id="total-unpaid" class="summary-stat-value">0 kr</div>
+          </div>
+          <div class="summary-stat-card">
+            <div class="summary-stat-label">BETALT</div>
+            <div id="total-paid" class="summary-stat-value summary-stat-value-blue">0 kr</div>
+          </div>
+          <div class="summary-stat-card">
+            <div class="summary-stat-label">BÖTER</div>
+            <div id="total-count" class="summary-stat-value">0</div>
+          </div>
         </div>
-        <div class="stat">
-          <div class="muted">Totalt obetalt</div>
-          <div id="total-unpaid" class="stat-value">0 kr</div>
-        </div>
-      </div>
-      <div style="margin-top:1rem;">
-        <h3>Per person</h3>
-        <ul id="summary-person" class="summary-list"></ul>
-      </div>
-      <div style="margin-top:1rem;">
-        <h3>Per månad</h3>
-        <ul id="summary-month" class="summary-list"></ul>
+
+        <div class="summary-section-title">Värst ute</div>
+        <ul id="summary-person" class="summary-modern-list"></ul>
+
+        <div class="summary-section-title">Senaste böter</div>
+        <ul id="summary-month" class="summary-modern-list"></ul>
       </div>
     </section>
   </main>
+
+  <template id="summary-worst-item-template">
+    <li class="summary-row">
+      <div class="summary-row-left">
+        <span class="summary-medal">🥇</span>
+        <span class="summary-avatar">A</span>
+        <div>
+          <div class="summary-row-name">Namn</div>
+          <div class="summary-row-sub">0 böter</div>
+        </div>
+      </div>
+      <div class="summary-row-right">
+        <div class="summary-row-amount">0 kr</div>
+        <div class="summary-row-sub">obetalt</div>
+      </div>
+    </li>
+  </template>
+
+  <template id="summary-latest-item-template">
+    <li class="summary-row">
+      <div class="summary-row-left">
+        <span class="summary-avatar">A</span>
+        <div>
+          <div class="summary-row-name">Namn</div>
+          <div class="summary-row-sub">Beskrivning</div>
+        </div>
+      </div>
+      <div class="summary-row-right summary-row-right-inline">
+        <div class="summary-row-amount">0 kr</div>
+        <span class="summary-paid-pill">✓</span>
+      </div>
+    </li>
+  </template>
 
   <script src="app.js"></script>
 </body>
