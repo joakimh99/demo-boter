@@ -8,29 +8,15 @@
 </head>
 <body>
   <main class="app">
-    <section class="card full hero">
-      <div class="hero-content">
-        <img class="hero-logo" src="Bilder/Bodens_BK_logo.svg.png" alt="Bodens BK logga" />
-        <div>
-          <h1>Digital Bötesapp</h1>
-          <p class="muted">Hantera personer, böter, betalstatus och se sammanställning per månad, per person och totalt.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="card full nav-card">
+    <section class="full app-nav">
       <div class="mobile-nav-header">
         <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">☰ Meny</button>
       </div>
+      <button id="menu-backdrop" class="menu-backdrop" type="button" aria-label="Stäng meny"></button>
       <nav id="mobile-menu" class="mobile-menu" aria-label="Mobilmeny">
         <button class="menu-item" data-tab-target="fine" type="button">Lägg till böter</button>
         <button class="menu-item" data-tab-target="person" type="button">Lägg till spelare</button>
         <button class="menu-item" data-tab-target="summary" type="button">Sammanställning</button>
-      </nav>
-      <nav class="desktop-tabs" aria-label="Huvudflikar">
-        <button class="tab-btn" data-tab-target="fine" type="button">Lägg till böter</button>
-        <button class="tab-btn" data-tab-target="person" type="button">Lägg till spelare</button>
-        <button class="tab-btn" data-tab-target="summary" type="button">Sammanställning</button>
       </nav>
     </section>
 

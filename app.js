@@ -20,6 +20,7 @@ const summaryPersonEl = document.getElementById("summary-person");
 const summaryMonthEl = document.getElementById("summary-month");
 const menuToggleBtn = document.getElementById("menu-toggle");
 const mobileMenuEl = document.getElementById("mobile-menu");
+const menuBackdropEl = document.getElementById("menu-backdrop");
 const tabButtons = document.querySelectorAll("[data-tab-target]");
 const tabPanels = document.querySelectorAll("[data-tab-panel]");
 let activeTab = "fine";
@@ -34,9 +35,18 @@ function setActiveTab(tabName) {
   });
 }
 
+function setMobileMenuOpen(isOpen) {
+  if (!mobileMenuEl || !menuToggleBtn || !menuBackdropEl) {
+    return;
+  }
+  mobileMenuEl.classList.toggle("is-open", isOpen);
+  menuBackdropEl.classList.toggle("is-open", isOpen);
+  menuToggleBtn.setAttribute("aria-expanded", String(isOpen));
+  document.body.classList.toggle("menu-open", isOpen);
+}
+
 function closeMobileMenu() {
-  mobileMenuEl.classList.remove("is-open");
-  menuToggleBtn.setAttribute("aria-expanded", "false");
+  setMobileMenuOpen(false);
 }
 
 function formatCurrency(amount) {
@@ -174,10 +184,18 @@ function renderAll() {
   renderSummary();
 }
 
-menuToggleBtn.addEventListener("click", () => {
-  const isOpen = mobileMenuEl.classList.toggle("is-open");
-  menuToggleBtn.setAttribute("aria-expanded", String(isOpen));
-});
+if (menuToggleBtn && mobileMenuEl && menuBackdropEl) {
+  menuToggleBtn.addEventListener("click", () => {
+    const isOpen = !mobileMenuEl.classList.contains("is-open");
+    setMobileMenuOpen(isOpen);
+  });
+  menuBackdropEl.addEventListener("click", closeMobileMenu);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMobileMenu();
+    }
+  });
+}
 
 tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
