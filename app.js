@@ -18,6 +18,26 @@ const totalAllEl = document.getElementById("total-all");
 const totalUnpaidEl = document.getElementById("total-unpaid");
 const summaryPersonEl = document.getElementById("summary-person");
 const summaryMonthEl = document.getElementById("summary-month");
+const menuToggleBtn = document.getElementById("menu-toggle");
+const mobileMenuEl = document.getElementById("mobile-menu");
+const tabButtons = document.querySelectorAll("[data-tab-target]");
+const tabPanels = document.querySelectorAll("[data-tab-panel]");
+let activeTab = "fine";
+
+function setActiveTab(tabName) {
+  activeTab = tabName;
+  tabPanels.forEach((panel) => {
+    panel.classList.toggle("is-visible", panel.dataset.tabPanel === tabName);
+  });
+  tabButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.tabTarget === tabName);
+  });
+}
+
+function closeMobileMenu() {
+  mobileMenuEl.classList.remove("is-open");
+  menuToggleBtn.setAttribute("aria-expanded", "false");
+}
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 }).format(amount);
@@ -154,6 +174,18 @@ function renderAll() {
   renderSummary();
 }
 
+menuToggleBtn.addEventListener("click", () => {
+  const isOpen = mobileMenuEl.classList.toggle("is-open");
+  menuToggleBtn.setAttribute("aria-expanded", String(isOpen));
+});
+
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setActiveTab(button.dataset.tabTarget);
+    closeMobileMenu();
+  });
+});
+
 personForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const name = personNameInput.value.trim();
@@ -225,3 +257,4 @@ fineListEl.addEventListener("click", (event) => {
 });
 
 renderAll();
+setActiveTab(activeTab);

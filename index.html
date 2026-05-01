@@ -18,7 +18,23 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card full nav-card">
+      <div class="mobile-nav-header">
+        <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">☰ Meny</button>
+      </div>
+      <nav id="mobile-menu" class="mobile-menu" aria-label="Mobilmeny">
+        <button class="menu-item" data-tab-target="fine" type="button">Lägg till böter</button>
+        <button class="menu-item" data-tab-target="person" type="button">Lägg till spelare</button>
+        <button class="menu-item" data-tab-target="summary" type="button">Sammanställning</button>
+      </nav>
+      <nav class="desktop-tabs" aria-label="Huvudflikar">
+        <button class="tab-btn" data-tab-target="fine" type="button">Lägg till böter</button>
+        <button class="tab-btn" data-tab-target="person" type="button">Lägg till spelare</button>
+        <button class="tab-btn" data-tab-target="summary" type="button">Sammanställning</button>
+      </nav>
+    </section>
+
+    <section class="card tab-panel" data-tab-panel="person">
       <div class="section-title">
         <h2>Lägg till person</h2>
       </div>
@@ -32,7 +48,7 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card tab-panel" data-tab-panel="fine">
       <div class="section-title">
         <h2>Lägg till böter</h2>
       </div>
@@ -51,7 +67,7 @@
       </div>
     </section>
 
-    <section class="card full">
+    <section class="card full tab-panel" data-tab-panel="summary">
       <div class="section-title">
         <h2>Sammanställning</h2>
       </div>
