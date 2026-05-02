@@ -1,6 +1,7 @@
 const state = {
   people: [],
-  fines: []
+  fines: [],
+  fineTypes: []
 };
 
 const personForm = document.getElementById("person-form");
@@ -13,6 +14,11 @@ const fineDescriptionInput = document.getElementById("fine-description");
 const fineAmountInput = document.getElementById("fine-amount");
 const fineDateInput = document.getElementById("fine-date");
 const fineListEl = document.getElementById("fine-list");
+
+const fineTypeForm = document.getElementById("fine-type-form");
+const fineTypeNameInput = document.getElementById("fine-type-name");
+const fineTypeAmountInput = document.getElementById("fine-type-amount");
+const fineTypeListEl = document.getElementById("fine-type-list");
 
 const totalUnpaidEl = document.getElementById("total-unpaid");
 const totalPaidEl = document.getElementById("total-paid");
@@ -109,6 +115,30 @@ function renderPeople() {
   });
 }
 
+function renderFineTypes() {
+  fineTypeListEl.innerHTML = "";
+  if (state.fineTypes.length === 0) {
+    fineTypeListEl.innerHTML = '<li class="empty">Inga bötestyper ännu. Lägg till den första ovan.</li>';
+    return;
+  }
+
+  const sorted = [...state.fineTypes].sort((a, b) => a.name.localeCompare(b.name, "sv"));
+  sorted.forEach((ft) => {
+    const li = document.createElement("li");
+    li.className = "fine-item";
+    const amountText =
+      ft.defaultAmount != null && ft.defaultAmount > 0 ? formatCurrency(ft.defaultAmount) : "Inget standardbelopp";
+    li.innerHTML = `
+      <div class="fine-header">
+        <strong>${ft.name}</strong>
+        <button class="btn-danger" data-action="delete-fine-type" data-id="${ft.id}" type="button">Ta bort</button>
+      </div>
+      <div class="muted">Standardbelopp: ${amountText}</div>
+    `;
+    fineTypeListEl.appendChild(li);
+  });
+}
+
 function renderFines() {
   fineListEl.innerHTML = "";
   if (state.fines.length === 0) {
@@ -190,6 +220,7 @@ function renderAll() {
   renderPersonSelect();
   renderPeople();
   renderFines();
+  renderFineTypes();
   renderSummary();
 }
 
@@ -240,6 +271,33 @@ personListEl.addEventListener("click", (event) => {
   }
 });
 
+fineTypeForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = fineTypeNameInput.value.trim();
+  const amountRaw = fineTypeAmountInput.value.trim();
+  if (!name) {
+    return;
+  }
+  let defaultAmount = null;
+  if (amountRaw !== "") {
+    const n = Number(amountRaw);
+    if (Number.isNaN(n) || n < 0) {
+      return;
+    }
+    if (n > 0) {
+      defaultAmount = n;
+    }
+  }
+  state.fineTypes.push({
+    id: crypto.randomUUID(),
+    name,
+    defaultAmount
+  });
+  fineTypeNameInput.value = "";
+  fineTypeAmountInput.value = "";
+  renderAll();
+});
+
 fineForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const personId = finePersonSelect.value;
@@ -280,6 +338,16 @@ fineListEl.addEventListener("click", (event) => {
       return { ...fine, paid: !fine.paid };
     });
   }
+  renderAll();
+});
+
+fineTypeListEl.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button || button.dataset.action !== "delete-fine-type") {
+    return;
+  }
+  const typeId = button.dataset.id;
+  state.fineTypes = state.fineTypes.filter((t) => t.id !== typeId);
   renderAll();
 });
 
