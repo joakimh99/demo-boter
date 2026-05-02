@@ -83,20 +83,24 @@
 
     <section class="card full tab-panel" data-tab-panel="summary">
       <div class="summary-screen" id="summary-root">
+        <h2 class="summary-title">Bodens BK</h2>
+
         <div class="summary-month-filter-row">
-          <label class="field-label summary-month-label" for="summary-month-filter">Månad</label>
-          <select id="summary-month-filter"></select>
-          <label class="field-label summary-month-label" for="summary-paid-filter">Status</label>
-          <select id="summary-paid-filter">
-            <option value="all">Alla</option>
-            <option value="unpaid">Ej betalda</option>
-            <option value="paid">Betalda</option>
-          </select>
+          <div class="summary-filter-item">
+            <label class="field-label summary-month-label" for="summary-month-filter">Månad</label>
+            <select id="summary-month-filter"></select>
+          </div>
+          <div class="summary-filter-item">
+            <label class="field-label summary-month-label" for="summary-paid-filter">Status</label>
+            <select id="summary-paid-filter">
+              <option value="all">Alla</option>
+              <option value="unpaid">Ej betalda</option>
+              <option value="paid">Betalda</option>
+            </select>
+          </div>
         </div>
 
         <div id="summary-overview">
-          <h2 class="summary-title">Bodens BK</h2>
-
           <div class="summary-stat-grid">
             <div class="summary-stat-card">
               <div class="summary-stat-label">TOTALT</div>
