@@ -142,7 +142,19 @@ function formatMonthLabel(yyyyMm) {
   }
   const [y, m] = yyyyMm.split("-").map(Number);
   const d = new Date(y, m - 1, 1);
-  return d.toLocaleDateString("sv-SE", { month: "long", year: "numeric" });
+  const monthName = d.toLocaleDateString("sv-SE", { month: "long" });
+  const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+  return `${capitalizedMonth} ${y}`;
+}
+
+function formatMonthOnlyLabel(yyyyMm) {
+  if (!yyyyMm || !/^\d{4}-\d{2}$/.test(yyyyMm)) {
+    return "";
+  }
+  const [y, m] = yyyyMm.split("-").map(Number);
+  const d = new Date(y, m - 1, 1);
+  const monthName = d.toLocaleDateString("sv-SE", { month: "long" });
+  return monthName.charAt(0).toUpperCase() + monthName.slice(1);
 }
 
 function fineMonthKey(fine) {
@@ -200,16 +212,15 @@ function updateSummaryMonthFilterOptions() {
     return;
   }
 
+  const datedKeys = state.fines.map(fineMonthKey).filter(Boolean).sort(compareMonthKeys);
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
   const capMonth = `${currentYear}-${String(currentMonth).padStart(2, "0")}`;
-  const datedKeys = state.fines.map(fineMonthKey).filter(Boolean).sort(compareMonthKeys);
   const minYear = datedKeys.length > 0 ? Number(datedKeys[0].slice(0, 4)) : currentYear;
-  const latestFineMonth = datedKeys.length > 0 ? datedKeys[datedKeys.length - 1] : capMonth;
-  const latestFineYear = Number(latestFineMonth.slice(0, 4));
-  const maxYear = Math.max(currentYear, latestFineYear);
+  const maxYear = datedKeys.length > 0 ? Number(datedKeys[datedKeys.length - 1].slice(0, 4)) : currentYear;
   const months = monthsForYearSpan(minYear, maxYear).sort(compareMonthKeys);
+  const hasMultipleYears = minYear !== maxYear;
 
   if (summaryFilterMonth !== "all" && !months.includes(summaryFilterMonth)) {
     const preferred = months.includes(capMonth) ? capMonth : months[0];
@@ -224,7 +235,7 @@ function updateSummaryMonthFilterOptions() {
   months.forEach((monthKey) => {
     const option = document.createElement("option");
     option.value = monthKey;
-    option.textContent = formatMonthLabel(monthKey) || monthKey;
+    option.textContent = hasMultipleYears ? (formatMonthLabel(monthKey) || monthKey) : (formatMonthOnlyLabel(monthKey) || monthKey);
     summaryMonthFilterEl.appendChild(option);
   });
 }
