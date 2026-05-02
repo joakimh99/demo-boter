@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Bötesapp</title>
   <link rel="stylesheet" href="stil.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
 </head>
 <body>
   <main class="app">
@@ -34,7 +36,7 @@
       <p class="muted" style="margin:0 0 0.75rem;">Lägg till typer av böter som kan användas i laget (t.ex. &quot;Sen till träning&quot;). Du ser alla sparade typer nedan.</p>
       <form id="fine-type-form" class="input-row">
         <input id="fine-type-name" type="text" placeholder="Namn på bötestyp" required />
-        <input id="fine-type-amount" type="number" min="0" step="1" placeholder="Standardbelopp (kr), valfritt" />
+        <input id="fine-type-amount" type="number" min="0.01" step="0.01" placeholder="Belopp (kr)" required />
         <button type="submit" class="btn-primary">Lägg till typ</button>
       </form>
       <div style="margin-top:0.9rem;">
@@ -63,12 +65,12 @@
       </div>
       <form id="fine-form" class="input-row">
         <select id="fine-person" required>
-          <option value="">Välj person</option>
+          <option value="">Välj spelare</option>
         </select>
-        <input id="fine-description" type="text" placeholder="Beskrivning (ex. Glömde disken)" required />
-        <input id="fine-amount" type="number" min="1" step="1" placeholder="Belopp (kr)" required />
-        <label class="field-label" for="fine-date">Datum för böter</label>
-        <input id="fine-date" type="date" required />
+        <select id="fine-type" required>
+          <option value="">Välj bötestyp</option>
+        </select>
+        <input id="fine-amount" type="number" min="0.01" step="0.01" placeholder="Belopp (kr)" required />
         <button type="submit" class="btn-primary">Lägg till böter</button>
       </form>
       <div style="margin-top:0.9rem;">
@@ -84,12 +86,12 @@
 
         <div class="summary-stat-grid">
           <div class="summary-stat-card">
-            <div class="summary-stat-label">OBETALT</div>
-            <div id="total-unpaid" class="summary-stat-value">0 kr</div>
+            <div class="summary-stat-label">TOTALT</div>
+            <div id="total-sum" class="summary-stat-value">0 kr</div>
           </div>
           <div class="summary-stat-card">
-            <div class="summary-stat-label">BETALT</div>
-            <div id="total-paid" class="summary-stat-value summary-stat-value-blue">0 kr</div>
+            <div class="summary-stat-label">SPELARE</div>
+            <div id="total-players" class="summary-stat-value summary-stat-value-blue">0</div>
           </div>
           <div class="summary-stat-card">
             <div class="summary-stat-label">BÖTER</div>
@@ -118,7 +120,7 @@
       </div>
       <div class="summary-row-right">
         <div class="summary-row-amount">0 kr</div>
-        <div class="summary-row-sub">obetalt</div>
+        <div class="summary-row-sub">totalt</div>
       </div>
     </li>
   </template>
@@ -134,11 +136,10 @@
       </div>
       <div class="summary-row-right summary-row-right-inline">
         <div class="summary-row-amount">0 kr</div>
-        <span class="summary-paid-pill">✓</span>
       </div>
     </li>
   </template>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
