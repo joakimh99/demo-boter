@@ -38,7 +38,6 @@ body.menu-open {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr;
@@ -81,30 +80,22 @@ body.menu-open {
 
 .mobile-menu {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  min-height: 4.5rem;
-  padding: 0.45rem 0.4rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
-  background: rgba(2, 28, 24, 0.98);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.35);
-  gap: 0.35rem;
-  z-index: 35;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+  width: min(520px, 100%);
+  background: transparent;
 }
 
 .menu-item {
-  flex: 1 1 0;
-  background: rgba(255, 255, 255, 0.02);
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(89, 155, 133, 0.42);
   color: #fff;
-  text-align: center;
-  min-height: 52px;
-  padding: 0.5rem 0.3rem;
-  font-size: 0.78rem;
+  text-align: left;
+  min-height: 44px;
+  padding: 0.58rem 0.72rem;
+  font-size: 0.92rem;
   line-height: 1.2;
   border-radius: 11px;
 }
@@ -541,7 +532,6 @@ button:hover {
 @media (min-width: 900px) {
   .app {
     grid-template-columns: 1.1fr 1fr;
-    padding-bottom: 1rem;
   }
 
   .full {
