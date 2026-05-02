@@ -535,8 +535,7 @@ function renderSummary() {
     });
   }
 
-  const latestFines = sortFinesNewestFirst(visibleFines);
-  const finesToShow = summaryFilterMonth === "all" ? latestFines : latestFines.slice(0, 8);
+  const finesToShow = sortFinesNewestFirst(visibleFines);
 
   summaryMonthEl.innerHTML = "";
   if (finesToShow.length === 0) {
