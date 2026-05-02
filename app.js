@@ -21,7 +21,7 @@ const fineTypeAmountInput = document.getElementById("fine-type-amount");
 const fineTypeListEl = document.getElementById("fine-type-list");
 
 const totalSumEl = document.getElementById("total-sum");
-const totalPlayersEl = document.getElementById("total-players");
+const totalUnpaidSumEl = document.getElementById("total-unpaid-sum");
 const totalCountEl = document.getElementById("total-count");
 const summaryPersonEl = document.getElementById("summary-person");
 const summaryMonthEl = document.getElementById("summary-month");
@@ -494,9 +494,9 @@ function renderSummary() {
   const visibleFines = filterFinesByPayment(finesForMonth, summaryFilterPaid);
 
   const totalSum = visibleFines.reduce((sum, fine) => sum + fine.amount, 0);
-  const playerIdsWithFines = new Set(visibleFines.map((f) => f.playerId));
+  const totalUnpaidSum = visibleFines.filter((fine) => !fine.paid).reduce((sum, fine) => sum + fine.amount, 0);
   totalSumEl.textContent = formatCurrency(totalSum);
-  totalPlayersEl.textContent = String(playerIdsWithFines.size);
+  totalUnpaidSumEl.textContent = formatCurrency(totalUnpaidSum);
   totalCountEl.textContent = String(visibleFines.length);
 
   const personTotals = state.people.map((person) => {
@@ -524,13 +524,14 @@ function renderSummary() {
     });
   }
 
-  const latestFines = sortFinesNewestFirst(visibleFines).slice(0, 8);
+  const latestFines = sortFinesNewestFirst(visibleFines);
+  const finesToShow = summaryFilterMonth === "all" ? latestFines : latestFines.slice(0, 8);
 
   summaryMonthEl.innerHTML = "";
-  if (latestFines.length === 0) {
+  if (finesToShow.length === 0) {
     summaryMonthEl.innerHTML = `<li class="empty">Inga böter registrerade ${periodText}.</li>`;
   } else {
-    latestFines.forEach((item) => {
+    finesToShow.forEach((item) => {
       const name = item.playerName || personNameById(item.playerId);
       const subLine = [item.typeName || "", item.paid ? "Betald" : "Obetald"].filter(Boolean).join(" · ");
       const li = document.createElement("li");
