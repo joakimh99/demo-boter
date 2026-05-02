@@ -38,6 +38,7 @@ body.menu-open {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
+  padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr;
@@ -55,11 +56,6 @@ body.menu-open {
   position: relative;
   justify-self: start;
   align-self: start;
-}
-
-.mobile-nav-header {
-  display: flex;
-  justify-content: flex-start;
 }
 
 .desktop-tabs {
@@ -83,68 +79,34 @@ body.menu-open {
   color: #7ef3c0;
 }
 
-.menu-toggle {
-  background: #0c3e34;
-  border-color: #1d6a5b;
-  color: #dbfff3;
-  font-weight: 600;
-}
-
 .mobile-menu {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: min(82vw, 320px);
-  height: 100vh;
-  padding: 0.75rem 0.6rem;
-  background: rgba(2, 28, 24, 0.97);
-  border-right: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  gap: 0.35rem;
-  z-index: 30;
-  transform: translateX(-110%);
-  transition: transform 0.24s ease;
-}
-
-.mobile-menu.is-open {
-  transform: translateX(0);
-}
-
-.menu-backdrop {
+  flex-direction: row;
+  align-items: center;
   position: fixed;
-  inset: 0;
-  border: 0;
-  padding: 0;
-  background: rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 25;
-}
-
-.menu-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0.45rem 0.4rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+  background: rgba(2, 28, 24, 0.98);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.35);
+  gap: 0.35rem;
+  z-index: 35;
 }
 
 .menu-item {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid rgba(89, 155, 133, 0.45);
+  flex: 1 1 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(89, 155, 133, 0.42);
   color: #fff;
-  text-align: left;
-  width: 100%;
-  min-height: 46px;
-  max-height: 46px;
-  padding: 0.65rem 0.5rem;
-  font-size: 1rem;
-  line-height: 1.15;
-  border-radius: 0;
+  text-align: center;
+  min-height: 52px;
+  padding: 0.5rem 0.3rem;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  border-radius: 11px;
 }
 
 .menu-item.is-active {
@@ -579,18 +541,14 @@ button:hover {
 @media (min-width: 900px) {
   .app {
     grid-template-columns: 1.1fr 1fr;
+    padding-bottom: 1rem;
   }
 
   .full {
     grid-column: 1 / -1;
   }
 
-  .mobile-nav-header {
-    display: none;
-  }
-
-  .mobile-menu,
-  .menu-backdrop {
+  .mobile-menu {
     display: none !important;
   }
 
