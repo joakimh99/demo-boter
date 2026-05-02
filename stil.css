@@ -30,6 +30,10 @@ body.menu-open {
   overflow: hidden;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .app {
   max-width: 1200px;
   margin: 0 auto;
@@ -329,6 +333,32 @@ button:hover {
   margin: 0 auto;
 }
 
+.summary-month-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.summary-month-label {
+  margin: 0;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+#summary-month-filter {
+  width: auto;
+  min-width: 11rem;
+  max-width: 100%;
+}
+
+#summary-paid-filter {
+  width: auto;
+  min-width: 10rem;
+  max-width: 100%;
+}
+
 .summary-headline {
   font-size: 0.76rem;
   letter-spacing: 0.14em;
@@ -402,6 +432,15 @@ button:hover {
   padding: 0.6rem 0.7rem;
 }
 
+.summary-row-clickable {
+  cursor: pointer;
+}
+
+.summary-row-clickable:hover {
+  border-color: #2a7d69;
+  background: linear-gradient(90deg, rgba(9, 58, 48, 0.95), rgba(7, 48, 40, 0.95));
+}
+
 .summary-row-left {
   display: flex;
   align-items: center;
@@ -418,6 +457,17 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+.summary-pay-btn {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.55rem;
+  min-height: 34px;
+  white-space: nowrap;
+}
+
+.summary-row-amount.is-paid {
+  opacity: 0.72;
 }
 
 .summary-medal {
@@ -452,6 +502,46 @@ button:hover {
   color: #4cf5ac;
   font-weight: 700;
   font-size: 1.05rem;
+}
+
+.summary-player-detail {
+  max-width: 640px;
+}
+
+.summary-back-btn {
+  min-height: auto;
+  padding: 0.25rem 0.1rem;
+  border: 0;
+  background: transparent;
+  color: #7ac5a9;
+  font-weight: 600;
+  margin-bottom: 0.55rem;
+}
+
+.summary-player-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.8rem;
+}
+
+.summary-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  font-size: 1.55rem;
+  background: #24443b;
+  color: #ff9f3c;
+}
+
+.summary-player-name {
+  font-size: 1.95rem;
+  font-weight: 700;
+  line-height: 1.02;
+}
+
+.summary-stat-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .summary-paid-pill {

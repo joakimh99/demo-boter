@@ -16,16 +16,16 @@
       </div>
       <nav class="desktop-tabs" aria-label="Huvudflikar">
         <button class="tab-btn" data-tab-target="fine" type="button">Lägg till böter</button>
-        <button class="tab-btn" data-tab-target="fine-types" type="button">Bötestyper</button>
-        <button class="tab-btn" data-tab-target="person" type="button">Lägg till spelare</button>
         <button class="tab-btn" data-tab-target="summary" type="button">Sammanställning</button>
+        <button class="tab-btn" data-tab-target="person" type="button">Lägg till spelare</button>
+        <button class="tab-btn" data-tab-target="fine-types" type="button">Bötestyper</button>
       </nav>
       <button id="menu-backdrop" class="menu-backdrop" type="button" aria-label="Stäng meny"></button>
       <nav id="mobile-menu" class="mobile-menu" aria-label="Mobilmeny">
         <button class="menu-item" data-tab-target="fine" type="button">Lägg till böter</button>
-        <button class="menu-item" data-tab-target="fine-types" type="button">Bötestyper</button>
-        <button class="menu-item" data-tab-target="person" type="button">Lägg till spelare</button>
         <button class="menu-item" data-tab-target="summary" type="button">Sammanställning</button>
+        <button class="menu-item" data-tab-target="person" type="button">Lägg till spelare</button>
+        <button class="menu-item" data-tab-target="fine-types" type="button">Bötestyper</button>
       </nav>
     </section>
 
@@ -71,6 +71,8 @@
           <option value="">Välj bötestyp</option>
         </select>
         <input id="fine-amount" type="number" min="0.01" step="0.01" placeholder="Belopp (kr)" required />
+        <label class="field-label" for="fine-issued-at">Datum för böter</label>
+        <input id="fine-issued-at" type="date" required />
         <button type="submit" class="btn-primary">Lägg till böter</button>
       </form>
       <div style="margin-top:0.9rem;">
@@ -80,30 +82,67 @@
     </section>
 
     <section class="card full tab-panel" data-tab-panel="summary">
-      <div class="summary-screen">
-        <div class="summary-headline">Böteslåsan</div>
-        <h2 class="summary-title">Bodens BK</h2>
-
-        <div class="summary-stat-grid">
-          <div class="summary-stat-card">
-            <div class="summary-stat-label">TOTALT</div>
-            <div id="total-sum" class="summary-stat-value">0 kr</div>
-          </div>
-          <div class="summary-stat-card">
-            <div class="summary-stat-label">SPELARE</div>
-            <div id="total-players" class="summary-stat-value summary-stat-value-blue">0</div>
-          </div>
-          <div class="summary-stat-card">
-            <div class="summary-stat-label">BÖTER</div>
-            <div id="total-count" class="summary-stat-value">0</div>
-          </div>
+      <div class="summary-screen" id="summary-root">
+        <div class="summary-month-filter-row">
+          <label class="field-label summary-month-label" for="summary-month-filter">Månad</label>
+          <select id="summary-month-filter"></select>
+          <label class="field-label summary-month-label" for="summary-paid-filter">Status</label>
+          <select id="summary-paid-filter">
+            <option value="all">Alla</option>
+            <option value="unpaid">Ej betalda</option>
+            <option value="paid">Betalda</option>
+          </select>
         </div>
 
-        <div class="summary-section-title">Värst ute</div>
-        <ul id="summary-person" class="summary-modern-list"></ul>
+        <div id="summary-overview">
+          <h2 class="summary-title">Bodens BK</h2>
 
-        <div class="summary-section-title">Senaste böter</div>
-        <ul id="summary-month" class="summary-modern-list"></ul>
+          <div class="summary-stat-grid">
+            <div class="summary-stat-card">
+              <div class="summary-stat-label">TOTALT</div>
+              <div id="total-sum" class="summary-stat-value">0 kr</div>
+            </div>
+            <div class="summary-stat-card">
+              <div class="summary-stat-label">SPELARE</div>
+              <div id="total-players" class="summary-stat-value summary-stat-value-blue">0</div>
+            </div>
+            <div class="summary-stat-card">
+              <div class="summary-stat-label">BÖTER</div>
+              <div id="total-count" class="summary-stat-value">0</div>
+            </div>
+          </div>
+
+          <div class="summary-section-title">Värst ute</div>
+          <ul id="summary-person" class="summary-modern-list"></ul>
+
+          <div class="summary-section-title">Senaste böter</div>
+          <ul id="summary-month" class="summary-modern-list"></ul>
+        </div>
+
+        <div id="summary-player-detail" class="summary-player-detail hidden">
+          <button id="summary-player-back" type="button" class="summary-back-btn">← Tillbaka</button>
+          <div class="summary-player-header">
+            <span id="summary-player-avatar" class="summary-avatar summary-avatar-lg">A</span>
+            <div>
+              <div id="summary-player-name" class="summary-player-name">Spelare</div>
+              <div id="summary-player-meta" class="summary-row-sub">0 böter totalt</div>
+            </div>
+          </div>
+
+          <div class="summary-stat-grid summary-stat-grid-two">
+            <div class="summary-stat-card">
+              <div class="summary-stat-label">OBETALT</div>
+              <div id="summary-player-unpaid" class="summary-stat-value">0 kr</div>
+            </div>
+            <div class="summary-stat-card">
+              <div class="summary-stat-label">TOTALT</div>
+              <div id="summary-player-total" class="summary-stat-value summary-stat-value-blue">0 kr</div>
+            </div>
+          </div>
+
+          <div class="summary-section-title">Alla böter</div>
+          <ul id="summary-player-fines" class="summary-modern-list"></ul>
+        </div>
       </div>
     </section>
   </main>

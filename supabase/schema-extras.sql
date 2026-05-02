@@ -1,7 +1,7 @@
 -- Kör i Supabase SQL Editor (i valfri ordning efter dina tabeller finns).
 
--- Rekommenderas: kronologisk ordning för "Senaste böter"
-alter table fines add column if not exists created_at timestamptz default now();
+-- Datum för böter (det som appen visar och filtrerar månad på).
+alter table fines add column if not exists issued_at timestamptz default now();
 
 -- Row Level Security: anon-nyckeln i webbläsaren får bara det policies tillåter.
 alter table players enable row level security;
